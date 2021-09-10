@@ -1,0 +1,2 @@
+graphql:
+  baseUrl: https://api.github.com/graphql

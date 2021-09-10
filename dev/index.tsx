@@ -6,6 +6,7 @@ createDevApp()
   .registerPlugin(graphqlVoyagerPlugin)
   .addPage({
     element: <GraphqlVoyagerPage />,
-    title: 'Voyager',
+    title: 'Voyager'
   })
   .render();
+

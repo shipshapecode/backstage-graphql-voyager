@@ -1,5 +1,5 @@
-import { createRouteRef } from '@backstage/core';
+import { createRouteRef } from '@backstage/core-plugin-api';
 
 export const rootRouteRef = createRouteRef({
-  title: 'Graphql Voyager',
+  title: 'Graphql Voyager'
 });

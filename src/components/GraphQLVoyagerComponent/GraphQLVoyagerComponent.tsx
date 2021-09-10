@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Header,
-  Page,
-  Content,
-  Progress,
-} from '@backstage/core';
+import { Header, Page, Content, Progress } from '@backstage/core-components';
 import { Config } from '@backstage/config';
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
 import Alert from '@material-ui/lab/Alert';
@@ -20,9 +15,9 @@ async function introspectionProvider(endpoint: string) {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      query: getIntrospectionQuery(),
-    }),
-  })
+      query: getIntrospectionQuery()
+    })
+  });
 
   return introspectionResult.json();
 }
@@ -30,40 +25,44 @@ async function introspectionProvider(endpoint: string) {
 const displayOptions = {
   sortByAlphabet: true,
   showLeafFields: false,
-  hideRoot: true,
+  hideRoot: true
 };
 
 export const GraphQLVoyagerComponent = () => {
   const config: Config = useApi(configApiRef);
   const graphqlEndpoint = config.get<{ baseUrl: string }>('graphql').baseUrl;
-  const { value: result, loading, error } = useAsync(
-    async () => await introspectionProvider(graphqlEndpoint),
-    []
-  );
+  const {
+    value: result,
+    loading,
+    error
+  } = useAsync(async () => await introspectionProvider(graphqlEndpoint), []);
 
   if (loading) {
     return (
-      <Page themeId="tool">
-        <Header title="Graphql Voyager" subtitle="A visual representation of the schema.">
-        </Header>
+      <Page themeId='tool'>
+        <Header
+          title='Graphql Voyager'
+          subtitle='A visual representation of the schema.'
+        />
         <Content>
           <Progress />
         </Content>
       </Page>
     );
   } else if (error) {
-    return <Alert severity="error">{error.message}</Alert>;
+    return <Alert severity='error'>{error.message}</Alert>;
   }
-  console.log('👽️', result);
   return (
-    <Page themeId="tool">
-      <Header title="Graphql Voyager" subtitle="A visual representation of the schema.">
-      </Header>
-        <Voyager
-          displayOptions={displayOptions}
-          hideSettings={true}
-          introspection={result}
-        />
+    <Page themeId='tool'>
+      <Header
+        title='Graphql Voyager'
+        subtitle='A visual representation of the schema.'
+      />
+      <Voyager
+        displayOptions={displayOptions}
+        hideSettings
+        introspection={result}
+      />
     </Page>
   );
 };
