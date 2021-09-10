@@ -1,0 +1,11 @@
+.graphql-voyager {
+    height: calc(100vh - 118px);
+}
+
+.graphql-voyager > .doc-panel {
+    max-height: 100vh;
+}
+
+.graphql-voyager > .viewport {
+    width: calc(100vw - 420px);
+}
