@@ -1,15 +1,19 @@
 import React from 'react';
 import { GraphQLVoyagerComponent } from './GraphQLVoyagerComponent';
-import { ThemeProvider } from '@material-ui/core';
-import { lightTheme } from '@backstage/theme';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { msw, renderInTestApp } from '@backstage/test-utils';
+import { configApiRef } from '@backstage/core-plugin-api';
+import {
+  setupRequestMockHandlers,
+  MockConfigApi,
+  renderInTestApp,
+  TestApiProvider
+} from '@backstage/test-utils';
 
 describe('GraphQLVoyagerComponent', () => {
   const server = setupServer();
   // Enable sane handlers for network requests
-  msw.setupDefaultHandlers(server);
+  setupRequestMockHandlers(server);
 
   // setup mock response
   beforeEach(() => {
@@ -19,11 +23,16 @@ describe('GraphQLVoyagerComponent', () => {
   });
 
   it('should render', async () => {
+    const mockConfig = new MockConfigApi({
+      graphql: { baseUrl: 'https://example.com' }
+    });
     const rendered = await renderInTestApp(
-      <ThemeProvider theme={lightTheme}>
+      <TestApiProvider apis={[[configApiRef, mockConfig]]}>
         <GraphQLVoyagerComponent />
-      </ThemeProvider>,
+      </TestApiProvider>
     );
-    expect(rendered.getByText('Welcome to graphql-voyager!')).toBeInTheDocument();
+    expect(
+      rendered.getByText('A visual representation of the schema.')
+    ).toBeInTheDocument();
   });
 });

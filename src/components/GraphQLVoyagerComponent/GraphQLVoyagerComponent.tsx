@@ -30,6 +30,8 @@ const displayOptions = {
 
 export const GraphQLVoyagerComponent = () => {
   const config: Config = useApi(configApiRef);
+  console.log(config);
+  
   const graphqlEndpoint = config.get<{ baseUrl: string }>('graphql').baseUrl;
   const {
     value: result,
