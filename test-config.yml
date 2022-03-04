@@ -1,2 +1,12 @@
+app:
+  title: Ship Shape 🐙
+  baseUrl: http://localhost:3000
+
+organization:
+  name: Ship Shape
+
+backend:
+  baseUrl: http://localhost:7000
+
 graphql:
   baseUrl: https://api.github.com/graphql
