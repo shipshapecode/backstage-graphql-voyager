@@ -1,1 +1,0 @@
-export { GraphQLVoyagerComponent } from './GraphQLVoyagerComponent';

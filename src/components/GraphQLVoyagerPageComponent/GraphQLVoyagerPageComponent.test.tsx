@@ -1,5 +1,4 @@
 import React from 'react';
-import { GraphQLVoyagerComponent } from './GraphQLVoyagerComponent';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { configApiRef } from '@backstage/core-plugin-api';
@@ -9,8 +8,9 @@ import {
   renderInTestApp,
   TestApiProvider
 } from '@backstage/test-utils';
+import { GraphQLVoyagerPageComponent } from './GraphQLVoyagerPageComponent';
 
-describe('GraphQLVoyagerComponent', () => {
+describe("GraphQLVoyagerPageComponent", () => {
   const server = setupServer();
   // Enable sane handlers for network requests
   setupRequestMockHandlers(server);
@@ -18,21 +18,21 @@ describe('GraphQLVoyagerComponent', () => {
   // setup mock response
   beforeEach(() => {
     server.use(
-      rest.get('/*', (_, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      rest.get("/*", (_, res, ctx) => res(ctx.status(200), ctx.json({})))
     );
   });
 
-  it('should render', async () => {
+  it("should render", async () => {
     const mockConfig = new MockConfigApi({
-      graphql: { baseUrl: 'https://example.com' }
+      graphql: { baseUrl: "https://example.com" },
     });
     const rendered = await renderInTestApp(
       <TestApiProvider apis={[[configApiRef, mockConfig]]}>
-        <GraphQLVoyagerComponent />
+        <GraphQLVoyagerPageComponent />
       </TestApiProvider>
     );
     expect(
-      rendered.getByText('A visual representation of the schema.')
+      rendered.getByText("A visual representation of the schema.")
     ).toBeInTheDocument();
   });
 });
