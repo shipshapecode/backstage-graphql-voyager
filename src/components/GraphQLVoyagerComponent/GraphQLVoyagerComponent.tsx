@@ -1,10 +1,12 @@
 import React from 'react';
-import { Header, Page, Content, Progress } from '@backstage/core-components';
-import { Config } from '@backstage/config';
-import { configApiRef, useApi } from '@backstage/core-plugin-api';
+import { Content, Progress } from '@backstage/core-components';
 import Alert from '@material-ui/lab/Alert';
 import { useAsync } from 'react-use';
-import { getIntrospectionQuery } from 'graphql/utilities';
+import {
+  getIntrospectionQuery,
+  introspectionFromSchema,
+  buildSchema,
+} from "graphql/utilities";
 import { Voyager } from 'graphql-voyager';
 import fetch from 'isomorphic-fetch';
 import 'graphql-voyager/dist/voyager.css';
@@ -28,41 +30,43 @@ const displayOptions = {
   hideRoot: true
 };
 
-export const GraphQLVoyagerComponent = () => {
-  const config: Config = useApi(configApiRef);
-  const graphqlEndpoint = config.get<{ baseUrl: string }>('graphql').baseUrl;
+export const GraphQLVoyagerComponent = ({
+  endpoint,
+  sdl,
+}: {
+  endpoint?: string;
+  sdl?: string;
+}) => {
   const {
     value: result,
     loading,
-    error
-  } = useAsync(async () => await introspectionProvider(graphqlEndpoint), []);
+    error,
+  } = useAsync(async () => {
+    if (sdl) {
+      const data = introspectionFromSchema(buildSchema(sdl));
+      return { data };
+    }
+    if (endpoint) {
+      return await introspectionProvider(endpoint);
+    }
+    throw new Error("Must specify endpoint or schema SDL");
+  }, [endpoint, sdl]);
 
   if (loading) {
     return (
-      <Page themeId='tool'>
-        <Header
-          title='Graphql Voyager'
-          subtitle='A visual representation of the schema.'
-        />
-        <Content>
-          <Progress />
-        </Content>
-      </Page>
+      <Content>
+        <Progress />
+      </Content>
     );
   } else if (error) {
-    return <Alert severity='error'>{error.message}</Alert>;
+    return <Alert severity="error">{error.message}</Alert>;
   }
+
   return (
-    <Page themeId='tool'>
-      <Header
-        title='Graphql Voyager'
-        subtitle='A visual representation of the schema.'
-      />
-      <Voyager
-        displayOptions={displayOptions}
-        hideSettings
-        introspection={result}
-      />
-    </Page>
+    <Voyager
+      displayOptions={displayOptions}
+      hideSettings
+      introspection={result}
+    />
   );
 };
