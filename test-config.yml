@@ -9,4 +9,4 @@ backend:
   baseUrl: http://localhost:7000
 
 graphql:
-  baseUrl: https://api.github.com/graphql
+  baseUrl: https://countries.trevorblades.com

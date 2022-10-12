@@ -9,4 +9,3 @@ createDevApp()
     title: 'Voyager'
   })
   .render();
-

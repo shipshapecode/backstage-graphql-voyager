@@ -14,6 +14,7 @@ export const graphqlVoyagerPlugin = createPlugin({
 
 export const GraphqlVoyagerPage = graphqlVoyagerPlugin.provide(
   createRoutableExtension({
+    name: 'GraphqlVoyagerPage',
     component: () =>
       import('./components/GraphQLVoyagerComponent').then(
         (m) => m.GraphQLVoyagerComponent
