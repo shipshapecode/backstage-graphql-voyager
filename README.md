@@ -7,14 +7,14 @@
 ```bash
 # From your Backstage root directory
 cd packages/app
-yarn add @shipshapecode/plugin-graphql-voyager
+yarn add @shipshapecode/backstage-plugin-graphql-voyager
 ```
 
 
 2. Add the `GraphqlVoyagerPage` page to the routes in your app:
 
 ```tsx
-import { GraphqlVoyagerPage } from '@shipshapecode/plugin-graphql-voyager';
+import { GraphqlVoyagerPage } from '@shipshapecode/backstage-plugin-graphql-voyager';
 // down in the sidebar
     <Route path="/graphql-voyager" element={<GraphqlVoyagerPage />}/>
   </FlatRoutes>
